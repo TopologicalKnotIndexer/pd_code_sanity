@@ -1,6 +1,6 @@
 [project]
 name = "pd-code-sanity"
-version = "0.1.0"
+version = "0.1.1"
 description = "check pd_code weak sanity."
 authors = [
     {name = "GGN_2015",email = "neko@jlulug.org"}

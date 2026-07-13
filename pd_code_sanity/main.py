@@ -1,37 +1,28 @@
+from collections import Counter
+from typing import Any
 
-# 检查 pd_code 的合法性
-def sanity(pd_code:list[list[int | str]]) -> bool:
-    cnt = dict()
 
-    # 检查外层对象类型
+def sanity(pd_code: list[list[int | str]]) -> bool:
+    """Return whether *pd_code* has the structural invariants of a PD code."""
     if not isinstance(pd_code, list):
         return False
-    
-    # 检查内层对象
+
+    labels: list[Any] = []
+    label_type: type | None = None
     for crossing in pd_code:
-        if not isinstance(crossing, list):
+        if not isinstance(crossing, list) or len(crossing) != 4:
             return False
-        
-        # 检查元素个数合法
-        if len(crossing) != 4:
-            return False
-        
-        # 检查元素类型合法
-        for term in crossing:
-
-            # 检查内层对象类型
-            if ((not isinstance(term, str)) 
-                and (not isinstance(term, int))):
+        for label in crossing:
+            if isinstance(label, bool) or not isinstance(label, (int, str)):
                 return False
-            
-            # 统计每个对象出现次数
-            if cnt.get(term) is None:
-                cnt[term] = 0
-            cnt[term] += 1 
-    
-    # 每个元素恰好出现两次
-    for term in cnt:
-        if cnt[term] != 2:
-            return False
+            if label_type is None:
+                label_type = type(label)
+            elif type(label) is not label_type:
+                return False
+            try:
+                hash(label)
+            except TypeError:
+                return False
+            labels.append(label)
 
-    return True
+    return all(count == 2 for count in Counter(labels).values())

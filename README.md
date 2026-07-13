@@ -20,7 +20,7 @@ print(sanity([[True, 1, True, 1]])) # False: bool is not a label
 
 ## Algorithm
 
-Validation checks that the outer value and every crossing are lists, every crossing has exactly four entries, labels are consistently integers or strings, booleans are rejected, and every label occurs exactly twice. Counting uses `collections.Counter`, so runtime is linear in the number of crossing slots. This is structural validation; planarity is handled by the strong-sanity package.
+Validation checks that the outer value and every crossing are lists, every crossing has exactly four entries, labels are consistently integers or strings, booleans are rejected, and every label occurs exactly twice. Counting uses `collections.Counter`, so runtime is linear in the number of crossing slots. The empty code is accepted as the crossing-free unknot representation. This is structural validation only; it does not prove that arbitrary incidence data has a planar realization.
 
 ## Input conventions
 
@@ -32,12 +32,13 @@ No external software is required.
 
 ## Development
 
-Run examples and package checks before release. Python packages require Python 3.10 or newer. Build PyPI artifacts with:
+Python 3.10 or newer is required. Run the regression tests with:
 
 ```bash
-poetry check
-poetry build
+python -m unittest discover -s tests -v
 ```
+
+No PyPI publication is performed as part of repository maintenance.
 
 ## License
 
